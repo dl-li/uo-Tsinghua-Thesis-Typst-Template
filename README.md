@@ -10,8 +10,23 @@ An unofficial Typst template for Tsinghua University (THU) graduate thesis.
 本项目受PKUTHSS-Typst和ThuThesis启发，并在PKUTHSS-Typst的基础上修改而来，格式大量参考了ThuWordThesis模板。项目使用了以下Typst包：`tablem`、`cuti`、`a2c-nums`。感谢开发者们的贡献。
 
 ## 使用方法
+
+### A: from Typst Universe to Web APP
+- 使用本模板创建项目
+- 前往本项目的GitHub页面，下载fonts目录中的所有字体，并上传到项目目录任意位置
+
+### B: from GitHub to Web APP
+- 在GitHub上下载本项目的所有文件
 - 前往 Typst Web App 的 Dashboard 界面
 - 创建新项目 + Empty document 或 Project - New Project
 - 打开项目目录（左上角 Files），在本地多选本项目目录下除PDF外的所有文件，一起拖入 Web App 的目录中。注意不要直接上传整个项目的大文件夹。
 - 静待所有文件上传完成，尤其是字体文件。
-- 点开`正文-教程.typ`旁的眼睛图标，即可看到预览。
+- 点开template目录下`正文-教程.typ`旁的眼睛图标，即可看到预览。
+
+### C: from GitHub to Local Enviroment
+- 面向有开发基础的用户，不再赘述。
+
+
+## 关于字体
+
+为避免违反用户协议，已在v0.2.0版本中将英文字体替换为Web App自带字体（同时附带字体文件），中文字体替换为开源字体文件。这些平替字体基本可用，但是仍然建议在最后导出时替换为Windows版本的字体。字体设置参见`template- 设置.typ - 字体`
