@@ -22,13 +22,13 @@
   小七: 5pt,
 )
 
-#let 字体 = (
-  仿宋: ("Tex Gyre Termes", "FandolFang R"),
-  宋体: ("Tex Gyre Termes", "FandolSong"),
-  黑体: ("Tex Gyre Heros","FandolHei"),
-  楷体: ("Tex Gyre Termes", "FandolKai"),
-  代码: ("Cascadia Code", "FandolHei"),
-)
+#let 字体 = ( 
+  仿宋: ("Tex Gyre Termes", "Noto Serif CJK SC"),
+  宋体: ("Tex Gyre Termes", "Noto Serif CJK SC"),
+  黑体: ("Tex Gyre Heros","Noto Sans CJK SC"),
+  楷体: ("Tex Gyre Termes", "Noto Serif CJK SC"),
+  代码: ("DejaVu Sans Mono", "Noto Sans Mono CJK SC"),
+) //此处的字体为 Web APP 内置字体，缺少仿宋与楷体，用宋体代替，仅用作未指定字体时的默认。
 
 #let lengthceil(len, unit: 字号.小四) = calc.ceil(len / unit) * unit
 #let partcounter = counter("part")
@@ -437,6 +437,7 @@ others: none,
 doc: none
 
 ) = {
+  
   
   let pagebreakToRight = () => {
     if 右页起章 {
@@ -1185,8 +1186,15 @@ heading(numbering: none, outlined: true, "个人简历、在学期间完成的�
     set par(first-line-indent: 0em)
     set align(left)
     set text(字号.小四, font:字体.黑体)
+    v(24pt)
     it.body
   }
+  set enum(
+    numbering: "[1]",
+    indent: 0em,
+    body-indent: 1em,
+    number-align: start + top
+  )
     others.简历和成果
 }
 

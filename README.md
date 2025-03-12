@@ -13,23 +13,25 @@ An unofficial Typst template for Tsinghua University (THU) graduate thesis.
 
 ### A: from Typst Universe to Web APP
 - 使用[本模板](https://typst.app/universe/package/uo-tsinghua-thesis)创建项目
-- 前往[本项目的GitHub页面](https://github.com/dl-li/uo-Tsinghua-Thesis-Typst-Template)，下载fonts目录中的所有字体，并上传到项目目录任意位置。
-- 或自行上传Windows版字体，需配置，详见模板的`设置.typ - 字体`
-Typst Universe上的版本可能不是最新版
+- 前往`设置.typ`末尾配置字体
+Typst Universe上的版本可能滞后
+
 
 ### B: from GitHub to Web APP
 - 在GitHub上下载[Release](https://github.com/dl-li/uo-Tsinghua-Thesis-Typst-Template/releases)的Source Code
 - 前往 Typst Web App 的 Dashboard 界面
 - 创建新项目 + Empty document 或 Project - New Project
-- 打开Web APP上的项目文件目录，拖拽上传`template`、`lib.typ`和`fonts`(或自行上传Windows版字体)
-- 静待所有文件上传完成，尤其是字体文件。
+- 打开Web APP上的项目文件目录，拖拽上传`template`、`lib.typ`
+- 静待所有文件上传完成
+- 前往`设置.typ`末尾配置字体
 - 点开template目录下`正文-教程.typ`旁的眼睛图标，即可看到预览
+[国内GitCode镜像](https://gitcode.com/dl-li/uo-Tsinghua-Thesis-Typst-Template)
 
 ### C: from GitHub to Local Enviroment
 - 面向有开发基础的用户，不再赘述
 
 
 ## 关于字体
-为避免违反用户协议，已在v0.2.0版本中将英文字体替换为Web App自带字体（同时附带字体文件），中文字体替换为开源字体文件。这些平替字体基本可用，但是仍然建议在最后导出时替换为Windows版本的字体。字体设置参见`template- 设置.typ - 字体`
+本项目提供一系列开源字体，但是Windows版本的字体仍然是最佳选择，建议替换。字体设置参见`template- 设置.typ - 字体`
 
 ![thumbnail](/thumbnail.png)

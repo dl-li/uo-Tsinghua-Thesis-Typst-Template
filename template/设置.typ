@@ -16,12 +16,12 @@
 论文题目:[
   清华大学研究生学位论文
   
-  Typst模板 v0.2.0
+  Typst模板 v0.2.1
 ], // 换行需空行
 
 论文题目_书脊:"清华大学研究生学位论文 Typst 模板", //仅用于书脊页，内容同上，但去除换行，中西文之间添加空格，括号用半角
 
-论文题目_英: "Tsinghua Thesis Typst Template",
+论文题目_英: "T4: Tsinghua Thesis Typst Template",
 
 副标题: "申请清华大学医学博士学位论文",
 
@@ -77,15 +77,23 @@
 
 右页起章: false, // 目前有bug
 
-// 为避免版权争议，以本项目从v0.2.0开始将内置字体替换为以下开源字体，但效果并不完美
-// 可以手动上传Windows版本的字体: 
-// Web APP上传字体文件到任意目录后将以下字体名称后替换为: Times New Roman; Arial; SimHei(黑体); SimSun(宋体); FangSong(仿宋); KaiTi(楷体)
+// 最佳选择：使用以下Windows默认字体。由于相关规定限制，字体文件不在本项目中提供，请自行下载并上传至Web APP项目目录任意位置。
 字体: ( 
-  仿宋: ("Tex Gyre Termes", "FandolFang R"),
-  宋体: ("Tex Gyre Termes", "FandolSong"),
-  黑体: ("Tex Gyre Heros","FandolHei"),
-  楷体: ("Tex Gyre Termes", "FandolKai"),
-  代码: ("Cascadia Code", "FandolHei"),
+  仿宋: ("Times New Roman", "FangSong"),
+  宋体: ("Times New Roman", "SimSun"),
+  黑体: ("Arial","SimHei"),
+  楷体: ("Times New Roman", "KaiTi"),
+  代码: ("DejaVu Sans Mono", "Noto Sans Mono CJK SC"),
 )
+
+// 开源平替：本项目GitHub/GitCode仓库提供了对应字体的开源平替版本，上传font目录下的Fandol和Tex Gyre文件夹即可。但是效果并不完美。
+// 字体: ( 
+//   仿宋: ("Tex Gyre Termes", "FandolFang R"),
+//   宋体: ("Tex Gyre Termes", "FandolSong",
+//   黑体: ("Tex Gyre Heros","FandolHei"),
+//   楷体: ("Tex Gyre Termes", "FandolKai"),
+//   代码: ("DejaVu Sans Mono", "Noto Sans Mono CJK SC"),
+// )
+
 
 )
