@@ -12,12 +12,15 @@ An unofficial Typst template for Tsinghua University (THU) graduate thesis.
 ## 使用方法
 
 ### A: from Typst Universe to Web APP
+
 - 使用[本模板](https://typst.app/universe/package/uo-tsinghua-thesis)创建项目
 - 前往`设置.typ`末尾配置字体
+
 Typst Universe上的版本可能滞后
 
 
 ### B: from GitHub to Web APP
+
 - 在GitHub上下载[Release](https://github.com/dl-li/uo-Tsinghua-Thesis-Typst-Template/releases)的Source Code
 - 前往 Typst Web App 的 Dashboard 界面
 - 创建新项目 + Empty document 或 Project - New Project
@@ -25,9 +28,11 @@ Typst Universe上的版本可能滞后
 - 静待所有文件上传完成
 - 前往`设置.typ`末尾配置字体
 - 点开template目录下`正文-教程.typ`旁的眼睛图标，即可看到预览
+
 [国内GitCode镜像](https://gitcode.com/dl-li/uo-Tsinghua-Thesis-Typst-Template)
 
 ### C: from GitHub to Local Enviroment
+
 - 面向有开发基础的用户，不再赘述
 
 
