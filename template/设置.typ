@@ -16,7 +16,7 @@
 论文题目:[
   清华大学研究生学位论文
   
-  Typst模板 v0.2.1
+  Typst模板 v0.3.0
 ], // 换行需空行
 
 论文题目_书脊:"清华大学研究生学位论文 Typst 模板", //仅用于书脊页，内容同上，但去除换行，中西文之间添加空格，括号用半角
@@ -37,11 +37,11 @@
 
 导师_英: "Professor Sprvsr Name",
 
-副导师: "副导名 教授", //前往template.typ搜索变量名以调整
+副导师: "副导名 教授", //没有填none
 
 副导师_英: "Professor AssocSprvsr Name",
 
-// 日期: datetime(year: 2028, month: 5, day: 1), //默认为当前日期
+// 日期: datetime(year: 2028, month: 12, day: 1), //默认为当前日期
 
 关键词: ("Typst", "模板"),
 
@@ -65,6 +65,8 @@
 "", "某某某", "副教授", "XXXX大学",
 "秘书", "某某某", "助理研究员", "清华大学"),
 
+参考文献格式: "cell", // https://typst.app/docs/reference/model/bibliography/#parameters-style
+
 目录深度: 3,
 
 盲审版本: false, // 尚未调整
@@ -80,10 +82,10 @@
 // 最佳选择：使用以下Windows默认字体。由于相关规定限制，字体文件不在本项目中提供，请自行下载并上传至Web APP项目目录任意位置。
 字体: ( 
   仿宋: ("Times New Roman", "FangSong"),
-  宋体: ("Times New Roman", "SimSun"),
-  黑体: ("Arial","SimHei"),
+  宋体: ("Times New Roman", "SimSun", "Noto Serif CJK SC"),
+  黑体: ("Arial","SimHei", "Noto Sans CJK SC"),
   楷体: ("Times New Roman", "KaiTi"),
-  代码: ("DejaVu Sans Mono", "Noto Sans Mono CJK SC"),
+  代码: ("DejaVu Sans Mono", "Noto Sans CJK SC"),
 )
 
 // 开源平替：本项目GitHub/GitCode仓库提供了对应字体的开源平替版本，上传font目录下的Fandol和Tex Gyre文件夹即可。但是效果并不完美。

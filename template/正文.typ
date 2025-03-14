@@ -38,7 +38,7 @@
   body:"images/tupianhint.png",
   width: 70%,
   caption: [图题],
-  legend: [图片的补充说明文本，即图注。],
+  legend: [#lorem(30)],
   label: <图片示例>
 ) // width, legend 和 label可以不填
 
@@ -73,7 +73,7 @@
 
 在你的内容管理软件（如Zotero）中将文献库导出为BibLaTeX格式，粘贴到 `参考文献.bib` 中，然后在正文中使用 `@` 来引用即可。例如：我将引用AlphaFold3的论文@AF3。
 
-引用文献的格式可以在`论文信息设置.typ`中设置。详见 https://typst.app/docs/reference/model/bibliography/#parameters-style
+引用文献的格式可以在 `论文信息设置.typ` 中设置。详见 https://typst.app/docs/reference/model/bibliography/#parameters-style
 
 
 
@@ -91,6 +91,6 @@
 #set text(lang: "en")
 #bibliography("文献库.bib",
 title: none, 
-style: "cell" // https://typst.app/docs/reference/model/bibliography/#parameters-style
+style: settings.参考文献格式 // https://typst.app/docs/reference/model/bibliography/#parameters-style
 )
 #set text(lang: "zh")

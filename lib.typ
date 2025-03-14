@@ -23,12 +23,12 @@
 )
 
 #let 字体 = ( 
-  仿宋: ("Tex Gyre Termes", "Noto Serif CJK SC"),
-  宋体: ("Tex Gyre Termes", "Noto Serif CJK SC"),
-  黑体: ("Tex Gyre Heros","Noto Sans CJK SC"),
-  楷体: ("Tex Gyre Termes", "Noto Serif CJK SC"),
-  代码: ("DejaVu Sans Mono", "Noto Sans Mono CJK SC"),
-) //此处的字体为 Web APP 内置字体，缺少仿宋与楷体，用宋体代替，仅用作未指定字体时的默认。
+  仿宋: ("Times New Roman", "FangSong"),
+  宋体: ("Times New Roman", "SimSun"),
+  黑体: ("Arial","SimHei"),
+  楷体: ("Times New Roman", "KaiTi"),
+  代码: ("DejaVu Sans Mono"),
+)
 
 #let lengthceil(len, unit: 字号.小四) = calc.ceil(len / unit) * unit
 #let partcounter = counter("part")
@@ -425,11 +425,11 @@
 右页起章: false, // 目前有bug
 
 字体: (
-  仿宋: ("Tex Gyre Termes", "FandolFang R"),
-  宋体: ("Tex Gyre Termes", "FandolSong"),
-  黑体: ("Tex Gyre Heros","FandolHei"),
-  楷体: ("Tex Gyre Termes", "FandolKai"),
-  代码: ("Cascadia Code", "FandolHei"),
+  仿宋: ("Times New Roman", "FangSong"),
+  宋体: ("Times New Roman", "SimSun"),
+  黑体: ("Arial","SimHei"),
+  楷体: ("Times New Roman", "KaiTi"),
+  代码: ("DejaVu Sans Mono"),
 ),
 
 others: none,
@@ -822,7 +822,7 @@ if 盲审版本 {
   
   v(55pt)
    text(字号.三号, font: 字体.宋体)[
-    #str(int-to-cn-simple-num(日期.year())+"年"+int-to-cn-simple-num(日期.month())+"月")
+    #str(int-to-cn-simple-num(日期.year())+"年"+chinesenumber(日期.month(),standalone: true)+"月")
   ]
   v(15pt)
 }
