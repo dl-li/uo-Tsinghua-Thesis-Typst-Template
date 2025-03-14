@@ -14,6 +14,7 @@ An unofficial Typst template for Tsinghua University (THU) graduate thesis.
 ### A: from Typst Universe to Web APP
 - 使用[本模板](https://typst.app/universe/package/uo-tsinghua-thesis)创建项目
 - 前往`设置.typ`末尾配置字体
+
 只有大版本更新会同步Typst Universe，如果想要获取最新版，或需要修改模板格式，请前往GitHub/GitCode
 
 
@@ -25,6 +26,7 @@ An unofficial Typst template for Tsinghua University (THU) graduate thesis.
 - 静待所有文件上传完成
 - 前往`设置.typ`末尾配置字体
 - 点开template目录下`正文-教程.typ`旁的眼睛图标，即可看到预览
+
 [国内GitCode镜像](https://gitcode.com/dl-li/uo-Tsinghua-Thesis-Typst-Template)
 
 ### C: from GitHub/GitCode to Local Enviroment
