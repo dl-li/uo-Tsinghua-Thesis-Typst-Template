@@ -1,9 +1,0 @@
-# GitHub
-记得上传博资考模板
-
-# Typst Universe
-- 首先在本地的`'/Users/lidonglin/Library/Application Support/typst/packages/preview/uo-tsinghua-thesis'`进行本地测试，记得把两处引用lib.typ的地方改成@preview/uo-tsinghua-thesis:x.x.x
-- 修改`typst.toml`对应信息
-- 去GitHub同步最新的packages fork
-- 把新的版本上传到自己的fork中
-- 确认无误后提交PR
