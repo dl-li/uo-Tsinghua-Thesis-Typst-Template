@@ -1,5 +1,5 @@
 # GitHub
-记得上传
+记得上传博资考模板
 
 # Typst Universe
 - 首先在本地的`'/Users/lidonglin/Library/Application Support/typst/packages/preview/uo-tsinghua-thesis'`进行本地测试，记得把两处引用lib.typ的地方改成@preview/uo-tsinghua-thesis:x.x.x
