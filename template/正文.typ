@@ -1,14 +1,14 @@
-#import "../lib.typ": conf
+#import "../lib.typ": conf, show-cn-fakebold
 #import "设置.typ": settings
 #import "其他内容.typ": other_contents, tupian, biaoge
 #show: this_doc => conf(..settings, doc: this_doc, others: other_contents)
-
-#import "@preview/cuti:0.3.0": show-cn-fakebold
 #show: show-cn-fakebold //中文粗体支持
 
 
 
 = 简要教程
+
+#emoji.face.monocle 建议将本教程的源码和PDF预览结合食用
 
 == 基础信息设置
 
@@ -28,6 +28,10 @@
 两侧添加斜杠和星号，不显示/*被包含在其中的*/文本。 //在文本前添加双斜杠也可以做到。
 
 分段应空行，而不是简单换行。
+
+上下标使用`#super[]`和`#sub[]`实现，例如：#super[上标] #sub[下标]
+
+特殊符号使用`#sym.xxx`输入，详见https://typst.app/docs/reference/symbols/sym/
 
 
 == 图片
@@ -71,14 +75,38 @@
 
 === 引用参考文献
 
-在你的内容管理软件（如Zotero）中将文献库导出为BibLaTeX格式，粘贴到 `参考文献.bib` 中，然后在正文中使用 `@` 来引用即可。例如：我将引用AlphaFold3的论文@AF3。
+在你的内容管理软件（推荐Zotero）中将文献库导出为BibLaTeX格式，粘贴到 `参考文献.bib` 中，然后在正文中使用 `@` 来引用即可。例如：我在此引用两篇AlphaFold的论文 @AF2 @AF3。
+
+Zotero导出时，如果引文期刊名称需要缩写，请勾选“使用缩写的期刊名”。
 
 引用文献的格式可以在 `论文信息设置.typ` 中设置。详见 https://typst.app/docs/reference/model/bibliography/#parameters-style
 
 
+== 特殊名词格式
 
+对于一些需要特殊格式或包含特殊字符的名词，逐个调整或输入费时费力。可以使用`#show`规则来统一设置格式，简化输入。例如：
+#[
+  #set align(center)
 
+  *Before*: Drosophila melanogaster, EcoRI, NF-κB, LGR5, Lgr5, Lgr5Δ/+
 
+  #show "Dmel": [_Drosophila melanogaster_]
+  #show "EcoRI": [#emph[Eco]RI] // 不能直接使用形如 _Eco_RI 的方法来使一个词的一部分斜体
+  #show "NF-kappaB": [NF-]+sym.kappa+[B] // κ不方便直接输入
+  #show regex("(?i)LGR5-hprot"): [LGR5] // 使用正则表达式 regex("(?i)xxxxx") 来不区分大小写地匹配字符串 
+  #show regex("(?i)Lgr5-mgene"): [_Lgr5_] // （这样做也方便你在写作时就明确所说的是哪个物种的基因/蛋白）
+  #show regex("(?i)Lgr5-del"): [_Lgr5_#super[#sym.Delta/+]]
+
+  *After*: Dmel, EcoRI, NF-kappaB, lgr5-hprot, lgr5-mgene, lgr5-del
+]
+
+但是不建议对高频出现的字符串使用该规则，否则你可能会看到：
+
+#[
+  #set align(center)
+  #show "pi": sym.pi
+  Three little *pigs*... #emoji.pig #emoji.pig #emoji.pig
+]
 
 
 
@@ -87,10 +115,10 @@
 
 // 参考文献
 
-#heading(numbering: none, outlined: true)[参考文献]
 #set text(lang: "en")
-#bibliography("文献库.bib",
-title: none, 
-style: settings.参考文献格式 // https://typst.app/docs/reference/model/bibliography/#parameters-style
+#bibliography(
+  "文献库.bib",
+  title: "参考文献", 
+  style: settings.参考文献格式 
 )
 #set text(lang: "zh")

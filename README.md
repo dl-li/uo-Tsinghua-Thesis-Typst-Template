@@ -37,6 +37,6 @@ An unofficial Typst template for Tsinghua University (THU) graduate thesis.
 本项目提供一系列开源字体，但是Windows版本的字体仍然是最佳选择，建议替换。字体设置参见`template- 设置.typ - 字体`
 
 ## 博资考模板
-本项目包含生医药博资考书面报告模板(英文，非官方)，但不在Typst Universe提供，请前往GitHub/GitCode仓库获取。博资考模板可能不常维护，如果仓库里面找不到，请前往Release v0.3.0 寻找。
+本项目包含生医药博资考书面报告模板(英文，非官方)，但不在Typst Universe提供，请前往GitHub/GitCode仓库获取。本模板可能不常维护。
 
 ![thumbnail](/thumbnail.png)

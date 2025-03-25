@@ -345,12 +345,26 @@
   )
 }
 
+#let scatterChars(str, width: none) = {
+  set align(left)
+  if width == none{
+    str
+  } else {
+    box(
+    width: width,
+    stack(
+      dir: ltr,
+      ..str.clusters().map(x => [#x]).intersperse(1fr),
+    ),
+  )
+  }
+}
 
 
 
 
 #let conf(
-  文章类型: "Theis", //"Thesis"或"Dissertation"
+文章类型: "Theis", //"Thesis"或"Dissertation"
 
 作者名: "某某某",
 
@@ -467,94 +481,15 @@ set page("a4",
         ]
       }
     },
-    // header: locate(loc => {
-    //   if skippedstate.at(loc) and calc.even(loc.page()) { return }
-    //   [
-    //     #set text(字号.五号)
-    //     #set align(center)
-    //     #if partcounter.at(loc).at(0) < 10 {
-    //       let headings = query(selector(heading).after(loc), loc)
-    //       let next_heading = if headings == () {
-    //         ()
-    //       } else {
-    //         headings.first().body.text
-    //       }
-
-    //       // [HARDCODED] Handle the first page of Chinese abstract specailly
-    //       if next_heading == "摘　　要" and calc.odd(loc.page()) {
-    //         [
-    //           #next_heading
-    //           #v(-1em)
-    //           #line(length: 100%)
-    //         ]
-    //       }
-    //     } else if partcounter.at(loc).at(0) <= 20 {
-    //       if calc.even(loc.page()) {
-    //         [
-    //           #align(center, cheader)
-    //           #v(-1em)
-    //           #line(length: 100%)
-    //         ]
-    //       } else {
-    //         let footers = query(selector(<__footer__>).after(loc), loc)
-    //         if footers != () {
-    //           let elems = query(
-    //             heading.where(level: 1).before(footers.first().location()), footers.first().location()
-    //           )
-
-    //           // [HARDCODED] Handle the last page of Chinese abstract specailly
-    //           let el = if elems.last().body.text == "摘　　要" or not skippedstate.at(footers.first().location()) {
-    //             elems.last()
-    //           } else {
-    //             elems.at(-2)
-    //           }
-    //           [
-    //             #let numbering = if el.numbering == chinesenumbering {
-    //               chinesenumbering(..counter(heading).at(el.location()), location: el.location())
-    //             } else if el.numbering != none {
-    //               numbering(el.numbering, ..counter(heading).at(el.location()))
-    //             }
-    //             #if numbering != none {
-    //               numbering
-    //               h(0.5em)
-    //             }
-    //             #el.body
-    //             #v(-1em)
-    //             #line(length: 100%)
-    //           ]
-    //         }
-    //       }
-    //   }]}),
+    
     footer: 
-    //   context { 
-    //   let loc = here()
-    //   if skippedstate.at(loc) and calc.even(loc.page()) { return }
-    //   [
-    //     #set text(字号.五号)
-    //     #set align(center)
-    //     #if query(selector(heading).before(loc)).len() < 2 or query(selector(heading).after(loc)).len() == 0 {
-    //       // Skip cover, copyright and origin pages
-    //     } else {
-    //       let headers = query(selector(heading).before(loc))
-    //       let part = partcounter.at(headers.last().location()).first()
-    //       [
-    //         #if part < 20 {
-    //           numbering("I", counter(page).at(loc).first())
-    //         } else {
-    //           str(counter(page).at(loc).first())
-    //         }
-    //       ]
-    //     }
-    //     #label("__footer__")
-    //   ]
-    // },
-    context [
-      #set align(center)
-      #set text(字号.五号, font: 字体.宋体)
-      #if query(selector(heading).before(here())) != () [
-        #move(dy:-12pt,counter(page).display())
-      ]#label("__footer__")
-    ]
+      context [
+        #set align(center)
+        #set text(字号.五号, font: 字体.宋体)
+        #if query(selector(heading).before(here())) != () [
+          #move(dy:-12pt,counter(page).display())
+        ]#label("__footer__")
+      ]
   )
 
   set text(字号.一号, font: 字体.宋体, lang: "zh")
@@ -733,20 +668,8 @@ set page("a4",
     }
   }
 
-  let scatterChars(str, width: none) = {
-    set align(left)
-    if width == none{
-      str
-    } else {
-      box(
-      width: width,
-      stack(
-        dir: ltr,
-        ..str.clusters().map(x => [#x]).intersperse(1fr),
-      ),
-    )
-    }
-  }
+  show: show-cn-fakebold
+
 
 
   // let fieldvalue(value) = [
@@ -1119,6 +1042,7 @@ heading(numbering: none, outlined: true, "符号和缩略语说明")
 show terms.item: it=>{
   grid(
     columns: (8em, auto),
+
     it.term,
     it.description,
   )
@@ -1176,7 +1100,7 @@ heading(numbering: none, outlined: true, "个人简历、在学期间完成的�
   show heading.where(level: 2): it=>{
     
     set align(center)
-    set text(字号.四号, font:字体.黑体)
+    set text(字号.四号, font:字体.黑体, weight: "medium")
     v(24pt)
     it.body
     v(6pt)
@@ -1185,7 +1109,7 @@ heading(numbering: none, outlined: true, "个人简历、在学期间完成的�
     
     set par(first-line-indent: 0em)
     set align(left)
-    set text(字号.小四, font:字体.黑体)
+    set text(字号.小四, font:字体.黑体, weight: "medium")
     v(24pt)
     it.body
   }

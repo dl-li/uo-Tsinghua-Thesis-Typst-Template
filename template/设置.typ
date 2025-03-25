@@ -16,7 +16,7 @@
 论文题目:[
   清华大学研究生学位论文
   
-  Typst模板 v0.3.0
+  Typst模板 v0.3.1
 ], // 换行需空行
 
 论文题目_书脊:"清华大学研究生学位论文 Typst 模板", //仅用于书脊页，内容同上，但去除换行，中西文之间添加空格，括号用半角
@@ -81,10 +81,10 @@
 
 // 最佳选择：使用以下Windows默认字体。由于相关规定限制，字体文件不在本项目中提供，请自行下载并上传至Web APP项目目录任意位置。
 字体: ( 
-  仿宋: ("Times New Roman", "FangSong"),
-  宋体: ("Times New Roman", "SimSun", "Noto Serif CJK SC"),
-  黑体: ("Arial","SimHei", "Noto Sans CJK SC"),
-  楷体: ("Times New Roman", "KaiTi"),
+  仿宋: ("Times New Roman",  "FangSong", "Noto Serif CJK SC"),
+  宋体: ("Times New Roman",  "SimSun",   "Noto Serif CJK SC"),
+  黑体: ("Arial",            "SimHei",   "Noto Sans CJK SC"),
+  楷体: ("Times New Roman",  "KaiTi",    "Noto Serif CJK SC"),
   代码: ("DejaVu Sans Mono", "Noto Sans CJK SC"),
 )
 
