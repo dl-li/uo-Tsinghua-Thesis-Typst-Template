@@ -22,14 +22,6 @@
   小七: 5pt,
 )
 
-#let 字体 = ( 
-  仿宋: ("Times New Roman", "FangSong"),
-  宋体: ("Times New Roman", "SimSun"),
-  黑体: ("Arial","SimHei"),
-  楷体: ("Times New Roman", "KaiTi"),
-  代码: ("DejaVu Sans Mono"),
-)
-
 #let lengthceil(len, unit: 字号.小四) = calc.ceil(len / unit) * unit
 #let partcounter = counter("part")
 #let chaptercounter = counter("chapter")
@@ -363,7 +355,17 @@
 
 
 
+
 #let conf(
+
+字体: (
+  仿宋: ("Times New Roman", "FangSong"),
+  宋体: ("Times New Roman", "SimSun"),
+  黑体: ("Arial","SimHei"),
+  楷体: ("Times New Roman", "KaiTi"),
+  代码: ("DejaVu Sans Mono"),
+),
+
 文章类型: "Theis", //"Thesis"或"Dissertation"
 
 作者名: "某某某",
@@ -438,21 +440,12 @@
 
 右页起章: false, // 目前有bug
 
-字体: (
-  仿宋: ("Times New Roman", "FangSong"),
-  宋体: ("Times New Roman", "SimSun"),
-  黑体: ("Arial","SimHei"),
-  楷体: ("Times New Roman", "KaiTi"),
-  代码: ("DejaVu Sans Mono"),
-),
-
 others: none,
 
 doc: none
 
 ) = {
-  
-  
+
   let pagebreakToRight = () => {
     if 右页起章 {
       skippedstate.update(true)
@@ -657,8 +650,9 @@ set page("a4",
           link(el_loc, chinesenumbering(..counter(heading).at(el_loc), location: el_loc))
         } else {
           link(el_loc, [
-            节
+            第
             #chinesenumbering(..counter(heading).at(el_loc), location: el_loc)
+            节
           ])
         }
       }
@@ -902,7 +896,7 @@ pagebreak()
 
 
 // 关于学位论文使用授权的说明
-
+set par(justify: true)
 pagebreak()
 [
   #set align(left + top)
@@ -918,11 +912,8 @@ pagebreak()
   #set text(字号.四号)
   #set par(justify: true, leading: 1em, spacing: 14pt)
   
-  本人完全了解清华大学有关保留、使用学位论文的规定，即：
+  #others.授权
   
-  清华大学拥有在著作权法规定范围内学位论文的使用权，其中包括：（1）已获学位的研究生必须按学校规定提交学位论文，学校可以采用影印、缩印或其他复制手段保存研究生上交的学位论文；（2）为教学和科研目的，学校可以将公开的学位论文作为资料在图书馆、资料室等场所供校内师生阅读，或在校园网上供校内师生浏览部分内容；（3）根据《中华人民共和国学位条例暂行实施办法》及上级教育主管部门具体要求，向国家图书馆报送相应的学位论文。
-  
-  本人保证遵守上述规定。
   #v(23pt)
   #set text(字号.小四)
   #h(32pt) 作者签名：\_\_\_\_\_\_\_\_\_\_\_\_　　　　导师签名：\_\_\_\_\_\_\_\_\_\_\_\_
@@ -954,7 +945,7 @@ pagebreak()
 
   heading(numbering: none, outlined: true, "Abstract")
 
-  set par(first-line-indent: (amount: 2em,all: true))
+  set par(first-line-indent: (amount: 2em,all: true),justify: true)
 
   
   others.摘要_英
@@ -1084,7 +1075,7 @@ others.致谢
 
 heading(numbering: none, outlined: true, "声　　明")
 [
-  本人郑重声明：所呈交的学位论文，是本人在导师指导下，独立进行研究工作所取得的成果。尽我所知，除文中已经注明引用的内容外，本学位论文的研究成果不包含任何他人享有著作权的内容。对本论文所涉及的研究工作做出贡献的其他个人和集体，均已在文中以明确方式标明。
+  #others.声明
   #v(3em)
   #set align(right)
   签　名：\_\_\_\_\_\_\_\_\_\_\_\_　日　期：\_\_\_\_\_\_\_\_\_\_\_\_
@@ -1137,3 +1128,18 @@ heading(numbering: none, outlined: true, "答辩委员会决议书")
 others.答辩委员会决议书
 
 }
+
+#[
+  #set align(center+horizon)
+  #set text(size: 30pt, font: "Noto Sans CJK SC",fill: white)
+  #set page(fill: eastern)
+  
+  您现在正在预览"lib.typ"
+
+  \
+
+  请预览template目录下的
+  
+  "正文.typ"
+
+]

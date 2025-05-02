@@ -13,7 +13,7 @@ An unofficial Typst template for Tsinghua University (THU) graduate thesis.
 
 ### A: from Typst Universe to Web APP
 - 使用[本模板](https://typst.app/universe/package/uo-tsinghua-thesis)创建项目
-- 前往`设置.typ`末尾配置字体
+- 前往`设置与其他.typ`配置字体
 
 只有大版本更新会同步Typst Universe，如果想要获取最新版，或需要修改模板格式，请前往GitHub/GitCode
 
@@ -25,7 +25,7 @@ An unofficial Typst template for Tsinghua University (THU) graduate thesis.
 - 打开Web APP上的项目文件目录，拖拽上传`template`、`lib.typ`
 - 静待所有文件上传完成
 - 前往`设置.typ`末尾配置字体
-- 点开template目录下`正文-教程.typ`旁的眼睛图标，即可看到预览
+- 点开template目录下`正文.typ`旁的眼睛图标，即可看到预览
 
 [国内GitCode镜像](https://gitcode.com/dl-li/uo-Tsinghua-Thesis-Typst-Template)
 
@@ -34,7 +34,7 @@ An unofficial Typst template for Tsinghua University (THU) graduate thesis.
 
 
 ## 关于字体
-本项目提供一系列开源字体，但是Windows版本的字体仍然是最佳选择，建议替换。字体设置参见`template- 设置.typ - 字体`
+本项目提供一系列开源字体，但是Windows版本的字体仍然是最佳选择，建议替换。字体设置参见`template- 设置与其他.typ - settings - 字体`
 
 ## 博资考模板
 本项目包含生医药博资考书面报告模板(英文，非官方)，但不在Typst Universe提供，请前往GitHub/GitCode仓库获取。本模板可能不常维护。
