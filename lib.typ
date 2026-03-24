@@ -1,6 +1,7 @@
 #import "@preview/a2c-nums:0.0.1": int-to-cn-simple-num
-#import "@preview/cuti:0.3.0": show-cn-fakebold
+#import "@preview/cuti:0.4.0": show-cn-fakebold
 #show: show-cn-fakebold
+#import "@preview/modern-nju-thesis:0.4.0": bilingual-bibliography
 
 #let 字号 = (
   初号: 42pt,
@@ -224,10 +225,12 @@
     for el in elements {
       let maybe_number = {
         let el_loc = el.location()
-        if kind == image{
+        if kind == image {
           [图]
-        } else if kind == table{
+        } else if kind == table {
           [表]
+        } else if kind == "code" {
+          [代码]
         }
         chinesenumbering(chaptercounter.at(el_loc).first(), counter(figure.where(kind: kind)).at(el_loc).first(), location: el_loc)
         h(0.5em)
@@ -263,79 +266,7 @@
   }
 }
 
-#let codeblock(raw, caption: none, outline: false) = {
-  figure(
-    if outline {
-      rect(width: 100%)[
-        #set align(left)
-        #raw
-      ]
-    } else {
-      set align(left)
-      raw
-    },
-    caption: caption, kind: "code", supplement: ""
-  )
-}
 
-#let booktab(columns: (), aligns: (), width: auto, caption: none, ..cells) = {
-  let headers = cells.pos().slice(0, columns.len())
-  let contents = cells.pos().slice(columns.len(), cells.pos().len())
-  set align(center)
-
-  if aligns == () {
-    for i in range(0, columns.len()) {
-      aligns.push(center)
-    }
-  }
-
-  let content_aligns = ()
-  for i in range(0, contents.len()) {
-    content_aligns.push(aligns.at(calc.rem(i, aligns.len())))
-  }
-
-  /*return*/ figure(
-    block(
-      width: width,
-      grid(
-        columns: (auto),
-        row-gutter: 1em,
-        line(length: 100%),
-        [
-          #set align(center)
-          #box(
-            width: 100% - 1em,
-            grid(
-              columns: columns,
-              ..headers.zip(aligns).map(it => [
-                #set align(it.last())
-                #strong(it.first())
-              ])
-            )
-          )
-        ],
-        line(length: 100%),
-        [
-          #set align(center)
-          #box(
-            width: 100% - 1em,
-            grid(
-              columns: columns,
-              row-gutter: 1em,
-              ..contents.zip(content_aligns).map(it => [
-                #set align(it.last())
-                #it.first()
-              ])
-            )
-          )
-        ],
-        line(length: 100%),
-      ),
-    ),
-    caption: caption,
-    kind: table
-  )
-}
 
 #let scatterChars(str, width: none) = {
   set align(left)
@@ -352,7 +283,98 @@
   }
 }
 
+// tablem包: 允许使用类markdown语法绘制表格
+#import "@preview/tablem:0.3.0": tablem
 
+// 可以自动显示续表题的三线表
+#let three-line-table = tablem.with(
+  render: (caption, columns: auto, headline,..cells) => {
+    [
+      #let firstHeader = state("fh",true)//标记是否是第一个表头的状态
+      #table(
+        columns: columns,
+        column-gutter: 1.5em,
+        inset: (
+          x: 1em,
+          y: 0.6em,
+        ),
+        stroke: none,
+        align: center + horizon,
+        table.hline(y: 1, stroke: 1.5pt),
+        table.hline(y: 2, stroke: 1pt),
+        table.header(
+          // 自动“续表”的实现方式：利用表格的header跨页会重复显示的特性，不显示原有figure默认的caption，而是手动把它放到表格的header中表头的上一行（合并一整行），再根据是否首次显示判定是“表”还是“续表”
+          table.cell(colspan: columns,[
+            #set text(11pt)
+            #context{
+              if firstHeader.get(){
+                [表]
+                firstHeader.update(false)
+              }else{
+                [续表]
+              }
+              let loc = query(selector(figure.where(kind:table)).before(here())).last().location()
+              chinesenumbering(chaptercounter.at(loc).first(),
+              counter(figure.where(kind: table)).at(loc).first()) //手动生成表的编号
+            }
+            ~~
+            #caption //表题本体
+            #v(3pt)
+          ]),
+          ..headline.children //表头
+        ),
+        ..cells, //表格的其余部分
+        table.hline(stroke: 1.5pt),
+      )
+      #firstHeader.update(true)
+    ]
+  }
+)
+
+// biaoge: 可以生成带有标签和表题的三线表
+#let biaogeHint = [
+  |#text(red)[【`#biaoge(...)` 使用方法】]|<|
+  | -------------- | -------------- |
+  | caption:       | [表题]          |
+  | body:          | [Markdown表格]  | 
+  | label:         | \<标签\>，可不填  |
+  | 合并单元格       | `^`或`<`        |
+]
+#let biaoge(caption:text(red)[【未命名表格】], body: biaogeHint, label: none) = {
+  align(center)[
+    #show figure: set block(breakable: true)
+    #figure(
+      caption: caption,
+      three-line-table(caption, body),
+    ) #label
+  ]
+}
+
+#let daimaHint=````typst
+  #daima(
+    body:```python
+    INSERT YOUR CODE HERE
+    ```,
+    caption: [代码标题]，
+    label: <标签>,
+  )
+  ````
+
+#let daima(body:daimaHint, caption:text(red)[【未命名代码块】], label: none) = {
+  align(center)[
+    #block(breakable: false)[
+      #figure(
+        rect(width: auto, inset: 0.7em, stroke: 0.7pt)[
+          #set par(leading: 0.5em)
+          #body
+        ],
+        caption: caption, 
+        kind: "code", 
+        supplement: "代码",
+      ) #label
+    ]
+  ]
+}
 
 
 
@@ -373,12 +395,11 @@
 作者_英: "Some Guy",
 
 论文题目:[
+  
   清华大学研究生学位论文
   
   Typst模板
 ],
-
-论文题目_书脊:"清华大学研究生学位论文 Typst 模板", //仅用于书脊页，内容同上，但去除换行，中西文之间添加空格，括号用半角
 
 论文题目_英: "Tsinghua Thesis Typst Template",
 
@@ -402,35 +423,13 @@
 
 日期: datetime.today(), //默认为当前日期
 
-关键词: ("Typst", "模板"),
-
-关键词_英: ("Typst", "Template", [_Italic Text_]),
-
-指导小组名单: /*三个为一组，姓名-职称-单位*/
-("某某某", "教授", "清华大学",
-"某    某", "副教授", "清华大学",
-"某某某", "助理教授", "清华大学"),
-
-公开评阅人名单:
-("某某某", "教授", "清华大学",
-"某某某", "副教授", "XXXX大学",
-"某某某", "研究员", "中国XXXX科学院XXXXXX研究所"),
-
-答辩委员会名单:/*注意，所有委员只有第一个需要写明，其余留空字符串*/
-("主席", "某某某", "教授", "清华大学",
-"委员", "某某某", "教授", "清华大学",
-"", "某某某", "研究员", "中国XXXX科学院\nXXXXXX研究所",
-"", "某某某", "教授", "XXXX大学",
-"", "某某某", "副教授", "XXXX大学",
-"秘书", "某某某", "助理研究员", "清华大学"),
-
 参考文献格式: "cell", // https://typst.app/docs/reference/model/bibliography/#parameters-style
 
 文献库: "文献库.bib",
 
 目录深度: 3,
 
-盲审版本: false, // 尚未调整
+盲审版本: false,
 
 插图清单: true,
 
@@ -438,7 +437,7 @@
 
 代码清单: false, // 尚未调整
 
-右页起章: false, // 目前有bug
+另页右页: false, // 目前有bug
 
 others: none,
 
@@ -446,15 +445,6 @@ doc: none
 
 ) = {
 
-  let pagebreakToRight = () => {
-    if 右页起章 {
-      skippedstate.update(true)
-      pagebreak(to: "odd", weak: true)
-      skippedstate.update(false)
-    } else {
-      pagebreak(weak: true)
-    }
-  }
 
 set page("a4",
     header: context {
@@ -475,8 +465,7 @@ set page("a4",
       }
     },
     
-    footer: 
-      context [
+    footer: context [
         #set align(center)
         #set text(字号.五号, font: 字体.宋体)
         #if query(selector(heading).before(here())) != () [
@@ -501,9 +490,9 @@ set page("a4",
     numbering: (..nums) => context { let loc = here()
       set text(font: 字体.宋体)
       if appendixcounter.at(loc).first() < 10 {
-        numbering("(1.1)", chaptercounter.at(loc).first(), ..nums)
+        numbering("（1.1）", chaptercounter.at(loc).first(), ..nums)
       } else {
-        numbering("(A.1)", chaptercounter.at(loc).first(), ..nums)
+        numbering("（A.1）", chaptercounter.at(loc).first(), ..nums)
       }
     }
   )
@@ -536,12 +525,7 @@ set page("a4",
     
     if it.level == 1 {
       
-      // if not it.body.text in ("Abstract", "学位论文使用授权说明", "版权声明","摘　　要")  {
-      if it.numbering != none{
-        pagebreakToRight()
-      } else{
-        pagebreak()
-      }
+      pagebreak(weak: true)
       
       //locate(loc => {
         context { let loc = here()
@@ -602,11 +586,11 @@ set page("a4",
       ]
       it.body
     } else if it.kind == "code" {
+      it.body
       [
         #set text(11pt)
-        代码#it.caption
+        #it.caption
       ]
-      it.body
     }
   ]
 
@@ -623,25 +607,21 @@ set page("a4",
       if el.func() == math.equation {
         // Handle equations
         link(el_loc, [
-          式
-          #chinesenumbering(chaptercounter.at(el_loc).first(), equationcounter.at(el_loc).first(), location: el_loc, brackets: true)
+          式（#chinesenumbering(chaptercounter.at(el_loc).first(), equationcounter.at(el_loc).first(), location: el_loc)）
         ])
       } else if el.func() == figure {
         // Handle figures
         if el.kind == image {
           link(el_loc, [
-            图
-            #chinesenumbering(chaptercounter.at(el_loc).first(), imagecounter.at(el_loc).first(), location: el_loc)
+            图#chinesenumbering(chaptercounter.at(el_loc).first(), imagecounter.at(el_loc).first(), location: el_loc)
           ])
         } else if el.kind == table {
           link(el_loc, [
-            表
-            #chinesenumbering(chaptercounter.at(el_loc).first(), tablecounter.at(el_loc).first(), location: el_loc)
+            表#chinesenumbering(chaptercounter.at(el_loc).first(), tablecounter.at(el_loc).first(), location: el_loc)
           ])
         } else if el.kind == "code" {
           link(el_loc, [
-            代码
-            #chinesenumbering(chaptercounter.at(el_loc).first(), rawcounter.at(el_loc).first(), location: el_loc)
+            代码#chinesenumbering(chaptercounter.at(el_loc).first(), rawcounter.at(el_loc).first(), location: el_loc)
           ])
         }
       } else if el.func() == heading {
@@ -650,8 +630,7 @@ set page("a4",
           link(el_loc, chinesenumbering(..counter(heading).at(el_loc), location: el_loc))
         } else {
           link(el_loc, [
-            第
-            #chinesenumbering(..counter(heading).at(el_loc), location: el_loc)
+            第#chinesenumbering(..counter(heading).at(el_loc), location: el_loc)
             节
           ])
         }
@@ -662,8 +641,7 @@ set page("a4",
     }
   }
 
-  show: show-cn-fakebold
-
+  show: it => show-cn-fakebold(it)
 
 
   // let fieldvalue(value) = [
@@ -679,20 +657,6 @@ set page("a4",
 
   
 // 封面
-
-if 盲审版本 {
-  [盲审封面，尚未完成]
-} else {
-  // box(
-  //   grid(
-  //     columns: (auto, auto),
-  //     gutter: 0.4em,
-  //     image("pkulogo.svg", height: 2.4em, fit: "contain"),
-  //     image("pkuword.svg", height: 1.6em, fit: "contain")
-  //   )
-  // )
-  // linebreak()
-  // strong(副标题)
 
   set page(margin: (x: 4cm, y: 6cm))
   set align(top)
@@ -742,7 +706,6 @@ if 盲审版本 {
     #str(int-to-cn-simple-num(日期.year())+"年"+chinesenumber(日期.month(),standalone: true)+"月")
   ]
   v(15pt)
-}
 
 
 
@@ -762,13 +725,34 @@ set text(字号.小四, font: 字体.宋体)
   } else {
     rotate(-90deg,c)
   }
+
+  // 将论文题目由Markup转换为字符串并添加空格
+  #let spine-format(markup) = {
+    let space = [ ].func()
+    let extract(it) = {
+      if type(it) == str { it }
+      else if type(it) == array { it.map(extract).join() }
+      else if type(it) == content {
+        if it.func() in (text, raw) { it.text }
+        else if it.has("children") { it.children.map(extract).join() }
+        else if it.has("body") { extract(it.body) }
+        else if it.func() in (space, parbreak, linebreak) { " " }
+        else if it.func() == smartquote { "\"" }
+        else { "" }
+      } else { "" }
+    }
+    let s = extract(markup).replace(regex("[\r\n]+"), " ")
+    s = s.replace(regex("([\x00-\x7F])([^\x00-\x7F])"), m => m.captures.at(0) + " " + m.captures.at(1))
+    s = s.replace(regex("([^\x00-\x7F])([\x00-\x7F])"), m => m.captures.at(0) + " " + m.captures.at(1))
+    s.replace(regex("\s+"), " ").trim()
+  }
   
   #move(dx: 18.45cm,dy: -0.7em,
   rotate(90deg, origin: (left+bottom))[
     #set align(left)
     #stack(
       dir:ltr,
-      ..论文题目_书脊.clusters().map(
+      ..spine-format(论文题目).clusters().map(
           c => r(c)
       )
     )
@@ -863,25 +847,35 @@ pagebreak()
   #set text(字号.小四, font: 字体.宋体)
   #show strong: it => text(字号.四号, font: 字体.黑体, it.body)
   #v(26pt)
-  #[#set text(字号.三号, font: 字体.黑体)
-    学位论文指导小组、公开评阅人和答辩委员会名单
-  ]
+  #if others.指导小组名单!=none{
+    text(字号.三号, font: 字体.黑体)[学位论文指导小组、公开评阅人和答辩委员会名单]
+  } else{
+    text(字号.三号, font: 字体.黑体)[学位论文公开评阅人和答辩委员会名单]
+  }
+  
   #v(33pt)
   
-  *指导小组名单*
-  #v(-4pt)
-  #grid(
-    inset: (y: 2pt),
-    columns: (20%, 20%, 60%), row-gutter: 0.6em, align: (center + horizon), ..指导小组名单
-  )
-  #v(16pt)
+  #if others.指导小组名单!=none [
+    *指导小组名单*
+    #v(-4pt)
+    #grid(
+      inset: (y: 2pt),
+      columns: (20%, 20%, 60%), row-gutter: 0.6em, align: (center + horizon), ..others.指导小组名单
+    )
+    #v(16pt)
+  ]
 
   *公开评阅人名单*
   #v(-4pt)
-  #grid(
-    inset: (y: 2pt),
-    columns: (20%, 20%, 60%), row-gutter: 0.6em, align: (center + horizon), ..公开评阅人名单
-  )
+  #if others.公开评阅人名单 != none{
+    grid(
+      inset: (y: 2pt),
+      columns: (20%, 20%, 60%), row-gutter: 0.6em, align: (center + horizon), ..others.公开评阅人名单
+    )
+  } else [
+    无（全隐名评阅）
+  ]
+  
   #v(16pt)
 
 
@@ -889,7 +883,7 @@ pagebreak()
   #v(-4pt)
   #grid(
     inset: (y: 2pt),
-    columns: (20%, 20%, 20%, 40%), rows: auto, row-gutter: 0.6em, align: (center + horizon), ..答辩委员会名单
+    columns: (20%, 20%, 20%, 40%), rows: auto, row-gutter: 0.6em, align: (center + horizon), ..others.答辩委员会名单
     )
 ]
 
@@ -901,7 +895,6 @@ pagebreak()
 [
   #set align(left + top)
   //#show heading: set text(字号.二号, font: 字体.黑体)
-  //#heading(numbering: none, outlined: false, [关于学位论文使用授权的说明])
   #[
     #set align(center)
     #v(39pt)
@@ -920,7 +913,30 @@ pagebreak()
   #v(16pt)
   #h(32pt) 日　　期：\_\_\_\_\_\_\_\_\_\_\_\_　　　　日　　期：\_\_\_\_\_\_\_\_\_\_\_\_
 ]
-  
+
+// 博士生对本论文系统性和创新性的总结 
+
+if others.系统性创新性 != none {
+  let empty-footer = [#sym.zws #label("__footer__")]
+  set page(
+    footer: empty-footer, 
+    header: [
+      #set align(center)
+      #set text(字号.五号, font: 字体.宋体)
+      博士生对本论文系统性和创新性的总结
+      #v(-5pt)
+      #line(length: 100%)
+      #v(-18pt)
+    ])
+    
+  [
+    #set align(center)
+    #v(27pt)
+    #text(字号.三号, font: 字体.黑体)[博士生对本论文系统性和创新性的总结]
+    #v(29pt)
+  ]
+  others.系统性创新性
+}
 
 
 // 中文摘要
@@ -936,12 +952,12 @@ pagebreak()
   set par(first-line-indent: 0em)
   linebreak()
   text(font: 字体.黑体)[关键词：]
-  关键词.join("；")
+  others.关键词.join("；")
 
 
 
 
-  // English abstract
+// English abstract
 
   heading(numbering: none, outlined: true, "Abstract")
 
@@ -951,10 +967,9 @@ pagebreak()
   others.摘要_英
 
   linebreak()
-  linebreak()
   set par(first-line-indent: 0em)
   [*Keywords:* ]
-  关键词_英.join("; ")
+  others.关键词_英.join("; ")
 
 
   
@@ -1022,7 +1037,7 @@ if 附表清单 {
 
 if 代码清单 {
 
-  listoffigures(title: "代        码", kind: "code")
+  listoffigures(title: "代码清单", kind: "code")
 }
 
 
@@ -1041,7 +1056,11 @@ show terms.item: it=>{
 
 others.符号和缩略语
 
-pagebreak(weak: false)
+if 另页右页 == true {
+  pagebreak(to: "odd")
+} else {
+  pagebreak(weak: true)
+}
   
 
 // 正文内容
@@ -1051,10 +1070,9 @@ set par(first-line-indent: (amount: 2em, all: true))
 set text(字号.小四, font: 字体.宋体)
 set page(numbering: "1")
 counter(page).update(1)
-
+ 
 
 doc
-
 
 
 
@@ -1064,74 +1082,81 @@ appendix()
 pagebreak()
 others.附录
 
-// 致谢
-
-heading(numbering: none, outlined: true, "致　　谢")
-others.致谢
 
 
-
-// 声明
-
-heading(numbering: none, outlined: true, "声　　明")
-[
-  #others.声明
-  #v(3em)
-  #set align(right)
-  签　名：\_\_\_\_\_\_\_\_\_\_\_\_　日　期：\_\_\_\_\_\_\_\_\_\_\_\_
-]
-
-
-
-// 简历、成果
-
-heading(numbering: none, outlined: true, "个人简历、在学期间完成的相关学术成果")
-{
-  set heading(outlined: false)
-  show heading.where(level: 2): it=>{
-    
-    set align(center)
-    set text(字号.四号, font:字体.黑体, weight: "medium")
-    v(24pt)
-    it.body
-    v(6pt)
+  // 致谢
+  
+  heading(numbering: none, outlined: true, "致　　谢")
+  others.致谢
+  
+  
+  
+  // 声明
+  
+  heading(numbering: none, outlined: true, "声　　明")
+  [
+    #others.声明
+    #v(3em)
+    #set align(right)
+    签　名：\_\_\_\_\_\_\_\_\_\_\_\_　日　期：\_\_\_\_\_\_\_\_\_\_\_\_
+  ]
+  
+  
+  
+  // 简历、成果
+  
+  heading(numbering: none, outlined: true, "个人简历、在学期间完成的相关学术成果")
+  {
+    set heading(outlined: false)
+    show heading.where(level: 2): it=>{
+      
+      set align(center)
+      set text(字号.四号, font:字体.黑体, weight: "medium")
+      v(24pt)
+      it.body
+      v(6pt)
+    }
+    show heading.where(level: 3): it=>{
+      
+      set par(first-line-indent: 0em)
+      set align(left)
+      set text(字号.小四, font:字体.黑体, weight: "medium")
+      v(24pt)
+      it.body
+    }
+    set enum(
+      numbering: "[1]",
+      indent: 0em,
+      body-indent: 1em,
+      number-align: start + top
+    )
+      others.简历和成果
   }
-  show heading.where(level: 3): it=>{
-    
-    set par(first-line-indent: 0em)
-    set align(left)
-    set text(字号.小四, font:字体.黑体, weight: "medium")
-    v(24pt)
-    it.body
+  
+  
+  
+  // 指导教师评语
+  
+  heading(numbering: none, outlined: true, "指导教师评语")
+  others.指导教师评语
+  
+  
+  
+  // 答辩委员会决议书
+  
+  heading(numbering: none, outlined: true, "答辩委员会决议书")
+  others.答辩委员会决议书
+
+  if others.其他材料 != none {
+    heading(numbering: none, outlined: true, "其他材料")
+    others.其他材料
   }
-  set enum(
-    numbering: "[1]",
-    indent: 0em,
-    body-indent: 1em,
-    number-align: start + top
-  )
-    others.简历和成果
-}
-
-
-
-// 指导教师评语
-
-heading(numbering: none, outlined: true, "指导教师评语")
-others.指导教师评语
-
-
-
-// 答辩委员会决议书
-
-heading(numbering: none, outlined: true, "答辩委员会决议书")
-others.答辩委员会决议书
-
+  
 }
 
 #[
   #set align(center+horizon)
-  #set text(size: 30pt, font: "Noto Sans CJK SC",fill: white)
+  #set text(size: 30pt, fill: white)
   #set page(fill: eastern)
   
   您现在正在预览"lib.typ"
