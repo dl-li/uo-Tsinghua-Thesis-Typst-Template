@@ -37,18 +37,17 @@
 
 == 图片
 
-简单图片可以使用 `#tupian()` 添加，如 @图片示例 所示。该函数支持便捷地添加图注（figure legend），且图片本体与图题、图注不会跨页。
+简单图片可以使用 `#tupian()` 添加，如 @图片示例 所示。该函数支持便捷地添加图注（description），且图片本体与图题、图注不会跨页。
 
 写作时，直接打出`#tupian()`，即可在预览界面看到该函数的用法提示。
 
 #tupian(
-  body:"images/tupianhint.png",
+  body: none, // body: image("/path/to/image.png")
   width: 70%,
   caption: [图题],
-  legend: [#lorem(30)],
+  description: [#lorem(30)],
   label: <图片示例>
-) // width, legend 和 label可以不填
-
+) // width, description 和 label可以不填
 
 更复杂的图片排版请使用原生的`#figure()`函数搭配`#image()`函数实现，详见 https://typst.app/docs/reference/model/figure/。两种方式添加的图片编号互通。
 

@@ -1,3 +1,8 @@
+// 本文件包含：
+//  1. 字体配置; 
+//  2. 论文基本信息配置 (如姓名、题目等); 
+//  3. 论文正文外的内容 (如摘要、附录、简历等)
+
 // ==================================
 //
 //         Step 1. 定义字体组合
@@ -15,7 +20,6 @@
 // 对于每类字体，应先定义西文字体，再定义中文字体。例如：黑体对应的西文字体设置为Arial，中文字体设置为SimHei。
 // 不同系统、不同版本的“宋黑仿楷”中文字体在调用时的名称可能不同，可能需要自行查证并修改。
 // 《指南》未对代码字体作强制要求，此处选用DejaVu Sans Mono，该字体适用于Typst Web App和多数Linux发行版。而在其他本地环境下，Windows系统可改为Consolas，macOS可改为Menlo
-
 
 #let 开源字体 = (
   仿宋: ("Tex Gyre Termes", "FandolFang R", "Noto Serif CJK SC"),
@@ -36,7 +40,7 @@
 
 #let settings = (
 
-字体: 开源字体, 
+字体: Win版字体, 
 // 填写上方的定义的字体组合名称，如"Win版字体"或"开源字体"。
 //【强烈建议】选择Win版，字体文件需自行获取并上传到Web APP目录（如果是本地使用，请安装到本机）。
 // 请确保正确配置，直到消除所有“unknown font family”错误提示。
@@ -51,7 +55,7 @@
   
   清华大学研究生学位论文
   
-  Typst模板 v0.5.0
+  Typst模板 v0.5.1
   
 ], // 如果想要手动换行，需要插入额外的空行，如此处所示
 
@@ -78,7 +82,7 @@
 //日期: datetime(year: 1911, month: 4, day: 26), //默认为当前日期
 
 参考文献格式: "cell", 
-// 推荐使用"gb-7714-2015-numeric",生医药专业使用"cell"。其他格式双语支持尚不完善
+// 推荐多数专业使用"gb-7714-2015-numeric", 生医药专业使用"cell"。其他格式双语支持尚不完善
 // 官方文档：https://typst.app/docs/reference/model/bibliography/#parameters-style
 
 文献库: "文献库.bib",
@@ -241,13 +245,17 @@
   - 完善了“学位论文指导小组、公开评阅人和答辩委员会名单”页面的所有形式
 
   == 版本v0.5.0
-  - 参考文献支持双语（Powered by `modern-nju-thesis`）
+  - [Breaking] 参考文献支持双语（Powered by `modern-nju-thesis`）
   - 增加了“盲审版本”选项：隐去院系专业、作者及导师姓名、致谢、声明、个人简历、评语决议书等
   - 用于书脊的论文题目现自动根据论文题目生成，无需手动输入
   - 完善了对表达式和代码块的支持
   - 优化了`设置与其他.typ`的结构
   - 支持“另页右页”：开启后正文第一章在奇数页起始
   - 添加了“系统性与创新性”页面与“其他材料”页面（可选）
+
+  == 版本 v0.5.1
+  - 优化了项目结构
+  - [Breaking] 改进了`#tupian()`、`#biaoge()`和`#daima()`
 
 = 尚不完善的功能
 
@@ -384,23 +392,7 @@
   其他材料: 其他材料,
 )
 
-#let tupian(body: "images/tupianhint.png", width:70%, caption: text(red)[【未命名图片】], legend: none, label: none)={  
-  align(center)[
-    #block(breakable: false)[
-      #figure(
-      image(body, width: width),
-      caption: caption
-      ) #label
-      #if legend != none{
-        v(-12pt)
-        set align(left)
-        set par(justify: true)
-        text(10.5pt)[#legend]
-        v(12pt)
-      }
-    ]
-  ]
-}
+
 
 #[
   #set align(center+horizon)

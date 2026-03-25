@@ -3,14 +3,14 @@ An unofficial Typst template for Tsinghua University (THU) graduate thesis.
 
 本项目是清华大学研究生学位论文Typst模板，旨在规定论文各部分内容格式与样式，面向初学者详细介绍模板的使用方法，帮助研究生进行学位论文写作，降低编辑论文格式的不规范性和额外工作量。请注意，这是一个非官方的模板，请在使用前充分确认该模板符合院系要求。
 
-  除常见自动排版功能外，本模板的特色功能包括:
-  - `#tupian()`函数可以便捷地添加图片、图题、图注等，并防止跨页；
-  - `#biaoge()`函数可以便捷地添加三线表并在跨页时自动生成续表题；
-  - `#daima()`函数可以添加简单的代码块，并自动编号。
-  
-  如果有进阶的排版需求，请了解基于LaTeX的ThuThesis模板，这是一个非常成熟的模板，全面支持最新的本科、研究生、博士后论文/报告格式，获研究生院官方推荐。
+除常见自动排版功能外，本模板的特色功能包括:
+- `#tupian()`函数可以便捷地添加图片、图题、图注等，并防止跨页；
+- `#biaoge()`函数可以便捷地添加三线表并在跨页时自动生成续表题；
+- `#daima()`函数可以添加简单的代码块，并自动编号。
 
-  本项目受PKUTHSS-Typst和ThuThesis启发，并在PKUTHSS-Typst的基础上修改而来，格式大量参考了ThuWordThesis模板进行像素级对齐。项目使用了以下Typst包：`tablem`、`cuti`、`a2c-nums`、`modern-nju-thesis`。感谢开发者们的贡献。
+如果有进阶的排版需求，请了解基于LaTeX的ThuThesis模板，这是一个非常成熟的模板，全面支持最新的本科、研究生、博士后论文/报告格式，获研究生院官方推荐。
+
+本项目受PKUTHSS-Typst和ThuThesis启发，并在PKUTHSS-Typst的基础上修改而来，格式大量参考了ThuWordThesis模板进行像素级对齐。项目使用了以下Typst包：`tablem`、`cuti`、`a2c-nums`、`modern-nju-thesis`。感谢开发者们的贡献。
 
 ## 使用方法
 
@@ -19,7 +19,6 @@ An unofficial Typst template for Tsinghua University (THU) graduate thesis.
 - 前往`设置与其他.typ`配置字体
 
 注：只有大版本更新会同步Typst Universe，如果想要获取最新版，或需要修改模板样式，请前往GitHub/GitCode
-
 
 ### B: from GitHub/GitCode to Web APP
 - 在GitHub上下载[Release](https://github.com/dl-li/uo-Tsinghua-Thesis-Typst-Template/releases)的Source Code
@@ -35,6 +34,8 @@ An unofficial Typst template for Tsinghua University (THU) graduate thesis.
 ### C: from GitHub/GitCode to Local Enviroment
 - 面向有开发基础的用户，不再赘述
 
+> [!NOTE]
+> 本模板还在开发过程中，新版本通常无法直接向下兼容，但绝大部分情况都仅需调整`设置与其他.typ`即可兼容。如更新后需调整`正文.typ`，会在更新日志中标注为“Breaking”。
 
 ## 关于字体
 本项目提供一系列开源字体，但是Windows版本的字体仍然是最佳选择，强烈建议替换。字体设置参见`template/设置与其他.typ`
