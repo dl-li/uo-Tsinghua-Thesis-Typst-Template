@@ -88,6 +88,7 @@ set page("a4",
           #v(-18pt)
         ]
       }
+      footnotecounter.update(())
     },
     
     footer: context [
@@ -169,7 +170,6 @@ set page("a4",
       
 
       
-      footnotecounter.update(())
       imagecounter.update(())
       tablecounter.update(())
       rawcounter.update(())
@@ -267,6 +267,17 @@ set page("a4",
   }
 
   show: it => show-cn-fakebold(it)
+
+  // 脚注
+  set footnote(numbering: "①")
+  show footnote.entry: it =>{
+    set text(size: 字号.小五)
+    let loc = it.note.location()
+    grid(columns: (1.5em,auto),[],[
+      #h(-1.5em)
+      #numbering("① ",..counter(footnote).at(loc)) 
+      #it.note.body])
+  }
 
 
   // let fieldvalue(value) = [
