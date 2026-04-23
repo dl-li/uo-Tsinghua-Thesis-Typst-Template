@@ -12,6 +12,9 @@ An unofficial Typst template for Tsinghua University (THU) graduate thesis.
 
 本项目受PKUTHSS-Typst和ThuThesis启发，并在PKUTHSS-Typst的基础上修改而来，格式大量参考了ThuWordThesis模板进行像素级对齐。项目使用了以下Typst包：`tablem`、`cuti`、`a2c-nums`、`modern-nju-thesis`。感谢开发者们的贡献。
 
+> [!NOTE]
+> 本模板还在开发过程中，新版本通常无法直接向下兼容，但绝大部分情况都仅需调整`设置与其他.typ`即可兼容。如更新后需调整`正文.typ`，会在更新日志中标注为“Breaking”。
+
 ## 使用方法
 
 ### A: from Typst Universe to Web APP
@@ -33,9 +36,6 @@ An unofficial Typst template for Tsinghua University (THU) graduate thesis.
 
 ### C: from GitHub/GitCode to Local Enviroment
 - 面向有开发基础的用户，不再赘述
-
-> [!NOTE]
-> 本模板还在开发过程中，新版本通常无法直接向下兼容，但绝大部分情况都仅需调整`设置与其他.typ`即可兼容。如更新后需调整`正文.typ`，会在更新日志中标注为“Breaking”。
 
 ## 关于字体
 本项目提供一系列开源字体，但是Windows版本的字体仍然是最佳选择，强烈建议替换。字体设置参见`template/设置与其他.typ`
