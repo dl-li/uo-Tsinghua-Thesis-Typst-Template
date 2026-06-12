@@ -343,215 +343,213 @@ set page("a4",
   ]
   v(15pt)
 
-
-
+set align(top+left)
+set text(字号.小四, font: 字体.宋体)
+set page(margin:3cm)
+set par(justify: true)
+set text(top-edge: "ascender")
 
 // 书脊
-pagebreak()
-set align(top + left)
-set text(字号.小四, font: 字体.宋体)
-[
-  #set page(margin: (x: 1cm, y: 5.5cm))
-  //#place(rect( width: 100%,height: 100%,)) //显示页边距
-  #set text(字号.小三, font: 字体.仿宋)
-  #set align(top + left)
-  
-  #let r(c) = if (c.contains(regex("[[:ascii:]]"))) {
-    c
-  } else {
-    rotate(-90deg,c)
-  }
-
-  // 将论文题目由Markup转换为字符串并添加空格
-  #let spine-format(markup) = {
-    let space = [ ].func()
-    let extract(it) = {
-      if type(it) == str { it }
-      else if type(it) == array { it.map(extract).join() }
-      else if type(it) == content {
-        if it.func() in (text, raw) { it.text }
-        else if it.has("children") { it.children.map(extract).join() }
-        else if it.has("body") { extract(it.body) }
-        else if it.func() in (space, parbreak, linebreak) { " " }
-        else if it.func() == smartquote { "\"" }
-        else { "" }
-      } else { "" }
+if true{
+  pagebreak()
+  set align(top + left)
+  set text(字号.小四, font: 字体.宋体, top-edge: "cap-height")
+  [
+    #set page(margin: (x: 1cm, y: 5.5cm))
+    //#place(rect( width: 100%,height: 100%,)) //显示页边距
+    #set text(字号.小三, font: 字体.仿宋)
+    #set align(top + left)
+    
+    #let r(c) = if (c.contains(regex("[[:ascii:]]"))) {
+      c
+    } else {
+      rotate(-90deg,c)
     }
-    let s = extract(markup).replace(regex("[\r\n]+"), " ")
-    s = s.replace(regex("([\x00-\x7F])([^\x00-\x7F])"), m => m.captures.at(0) + " " + m.captures.at(1))
-    s = s.replace(regex("([^\x00-\x7F])([\x00-\x7F])"), m => m.captures.at(0) + " " + m.captures.at(1))
-    s.replace(regex("\s+"), " ").trim()
-  }
-  
-  #move(dx: 18.45cm,dy: -0.7em,
-  rotate(90deg, origin: (left+bottom))[
-    #set align(left)
-    #stack(
-      dir:ltr,
-      ..spine-format(论文题目).clusters().map(
-          c => r(c)
+
+    // 将论文题目由Markup转换为字符串并添加空格
+    #let spine-format(markup) = {
+      let space = [ ].func()
+      let extract(it) = {
+        if type(it) == str { it }
+        else if type(it) == array { it.map(extract).join() }
+        else if type(it) == content {
+          if it.func() in (text, raw) { it.text }
+          else if it.has("children") { it.children.map(extract).join() }
+          else if it.has("body") { extract(it.body) }
+          else if it.func() in (space, parbreak, linebreak) { " " }
+          else if it.func() == smartquote { "\"" }
+          else { "" }
+        } else { "" }
+      }
+      let s = extract(markup).replace(regex("[\r\n]+"), " ")
+      s = s.replace(regex("([\x00-\x7F])([^\x00-\x7F])"), m => m.captures.at(0) + " " + m.captures.at(1))
+      s = s.replace(regex("([^\x00-\x7F])([\x00-\x7F])"), m => m.captures.at(0) + " " + m.captures.at(1))
+      s.replace(regex("\s+"), " ").trim()
+    }
+    
+    #move(dx: 18.45cm,dy: -0.7em,
+    rotate(90deg, origin: (left+bottom))[
+      #set align(left)
+      #stack(
+        dir:ltr,
+        ..spine-format(论文题目).clusters().map(
+            c => r(c)
+        )
       )
-    )
-  ])
-  #set align(bottom + right)
-  #move(dx: -0.5cm,dy: 0em,
-  rotate(90deg, origin: (right+bottom))[
-    #set align(left)
-    #box(width: 5em,
-    stack(
-      dir:ltr,
-      ..作者名.clusters().map(
-          c => r(c)
-      ).intersperse(1fr),
-    ))
-  ])
-]
-
-
+    ])
+    #set align(bottom + right)
+    #move(dx: -0.5cm,dy: 0em,
+    rotate(90deg, origin: (right+bottom))[
+      #set align(left)
+      #box(width: 5em,
+      stack(
+        dir:ltr,
+        ..作者名.clusters().map(
+            c => r(c)
+        ).intersperse(1fr),
+      ))
+    ])
+  ]
+}
 
 //英文封面
+if true{
+  pagebreak()
+  [
+    #set page(margin: (top: 5.5cm, bottom:5cm, x: 3.6cm))
+    //#place(rect( width: 100%,height: 100%,)) //显示页边距
+    #set align(top + center)
+    #[
+      #v(5pt)
+      #set par(spacing: 0.7em)
+      #set text(20pt, font: 字体.黑体)
+      #strong[#论文题目_英]
+    ]
 
-pagebreak()
-set text(top-edge: "ascender")
-[
-  #set page(margin: (top: 5.5cm, bottom:5cm, x: 3.6cm))
-  //#place(rect( width: 100%,height: 100%,)) //显示页边距
-  #set align(top + center)
-  #[
-    #v(5pt)
-    #set par(spacing: 0.7em)
-    #set text(20pt, font: 字体.黑体)
-    #strong[#论文题目_英]
-  ]
-
-  #set align(bottom)
-  #set text(字号.三号, font: 字体.宋体)
-  #set par(spacing: 1.02em)
-  
-  #文章类型 submitted to
-  
-  *Tsinghua University*
-  
-  in partial fulfillment of the requirement
-  
-  for the degree of
-  
-  #text(font: 字体.黑体)[*#英文学位名*] 
-  
-  in
-  
-  #text(font: 字体.黑体)[*#专业_英*]
-  
-  \
-  
-  #text(font: 字体.黑体)[by]
-
-  #text(font: 字体.黑体)[*#作者_英*]
-  
-  \
-  
-  #text(字号.小三)[
-    #grid(
-      columns: (12em,1em,20em),
-      align: (right,left,left),
-      [#文章类型 Supervisor],":  ",导师_英
-    )
+    #set align(bottom)
+    #set text(字号.三号, font: 字体.宋体)
+    #set par(spacing: 1.02em)
     
-    #if 副导师_英 != none{
-      grid(
+    #文章类型 submitted to
+    
+    *Tsinghua University*
+    
+    in partial fulfillment of the requirement
+    
+    for the degree of
+    
+    #text(font: 字体.黑体)[*#英文学位名*] 
+    
+    in
+    
+    #text(font: 字体.黑体)[*#专业_英*]
+    
+    \
+    
+    #text(font: 字体.黑体)[by]
+
+    #text(font: 字体.黑体)[*#作者_英*]
+    
+    \
+    
+    #text(字号.小三)[
+      #grid(
         columns: (12em,1em,20em),
         align: (right,left,left),
-        [Associate Supervisor],":  ",副导师_英
+        [#文章类型 Supervisor],":  ",导师_英
       )
-    }
+      
+      #if 副导师_英 != none{
+        grid(
+          columns: (12em,1em,20em),
+          align: (right,left,left),
+          [Associate Supervisor],":  ",副导师_英
+        )
+      }
+    ]
+    #v(25pt)
+    #text(font: 字体.黑体)[*#日期.display("[month repr:long], [year]")*]
+    #v(4pt)
   ]
-  #v(25pt)
-  #text(font: 字体.黑体)[*#日期.display("[month repr:long], [year]")*]
-  #v(4pt)
-]
-
-set page(margin:3cm)
-
-
+}
 
 // 学位论文指导小组、公开评阅人和答辩委员会名单
+if true{
+  pagebreak()
+  [
+    //#place(rect(width: 100%,height: 100%,)) //显示页边距
+    #set align(top+center)
+    #set text(字号.小四, font: 字体.宋体)
+    #show strong: it => text(字号.四号, font: 字体.黑体, it.body)
+    #v(26pt)
+    #if others.指导小组名单!=none{
+      text(字号.三号, font: 字体.黑体)[学位论文指导小组、公开评阅人和答辩委员会名单]
+    } else{
+      text(字号.三号, font: 字体.黑体)[学位论文公开评阅人和答辩委员会名单]
+    }
+    
+    #v(33pt)
+    
+    #if others.指导小组名单!=none [
+      *指导小组名单*
+      #v(-4pt)
+      #grid(
+        inset: (y: 2pt),
+        columns: (20%, 20%, 60%), row-gutter: 0.6em, align: (center + horizon), ..others.指导小组名单
+      )
+      #v(16pt)
+    ]
 
-pagebreak()
-[
-  //#place(rect(width: 100%,height: 100%,)) //显示页边距
-  #set align(top+center)
-  #set text(字号.小四, font: 字体.宋体)
-  #show strong: it => text(字号.四号, font: 字体.黑体, it.body)
-  #v(26pt)
-  #if others.指导小组名单!=none{
-    text(字号.三号, font: 字体.黑体)[学位论文指导小组、公开评阅人和答辩委员会名单]
-  } else{
-    text(字号.三号, font: 字体.黑体)[学位论文公开评阅人和答辩委员会名单]
-  }
-  
-  #v(33pt)
-  
-  #if others.指导小组名单!=none [
-    *指导小组名单*
+    *公开评阅人名单*
+    #v(-4pt)
+    #if others.公开评阅人名单 != none{
+      grid(
+        inset: (y: 2pt),
+        columns: (20%, 20%, 60%), row-gutter: 0.6em, align: (center + horizon), ..others.公开评阅人名单
+      )
+    } else [
+      无（全隐名评阅）
+    ]
+    
+    #v(16pt)
+
+
+    *答辩委员会名单*
     #v(-4pt)
     #grid(
       inset: (y: 2pt),
-      columns: (20%, 20%, 60%), row-gutter: 0.6em, align: (center + horizon), ..others.指导小组名单
-    )
-    #v(16pt)
+      columns: (20%, 20%, 20%, 40%), rows: auto, row-gutter: 0.6em, align: (center + horizon), ..others.答辩委员会名单
+      )
   ]
-
-  *公开评阅人名单*
-  #v(-4pt)
-  #if others.公开评阅人名单 != none{
-    grid(
-      inset: (y: 2pt),
-      columns: (20%, 20%, 60%), row-gutter: 0.6em, align: (center + horizon), ..others.公开评阅人名单
-    )
-  } else [
-    无（全隐名评阅）
-  ]
-  
-  #v(16pt)
-
-
-  *答辩委员会名单*
-  #v(-4pt)
-  #grid(
-    inset: (y: 2pt),
-    columns: (20%, 20%, 20%, 40%), rows: auto, row-gutter: 0.6em, align: (center + horizon), ..others.答辩委员会名单
-    )
-]
-
-
+}
 
 // 关于学位论文使用授权的说明
-set par(justify: true)
-pagebreak()
-[
-  #set align(left + top)
-  //#show heading: set text(字号.二号, font: 字体.黑体)
-  #[
-    #set align(center)
-    #v(39pt)
-    #text(字号.二号, font: 字体.黑体)[关于学位论文使用授权的说明]
-    #v(25pt)
+if true{
+  pagebreak()
+  [
+    #set align(left + top)
+    //#show heading: set text(字号.二号, font: 字体.黑体)
+    #[
+      #set align(center)
+      #v(39pt)
+      #text(字号.二号, font: 字体.黑体)[关于学位论文使用授权的说明]
+      #v(25pt)
+    ]
+    
+    #set text(字号.四号)
+    #set par(justify: true, leading: 1em, spacing: 14pt)
+    
+    #others.授权
+    
+    #v(23pt)
+    #set text(字号.小四)
+    #h(32pt) 作者签名：\_\_\_\_\_\_\_\_\_\_\_\_　　　　导师签名：\_\_\_\_\_\_\_\_\_\_\_\_
+    #v(16pt)
+    #h(32pt) 日　　期：\_\_\_\_\_\_\_\_\_\_\_\_　　　　日　　期：\_\_\_\_\_\_\_\_\_\_\_\_
   ]
-  
-  #set text(字号.四号)
-  #set par(justify: true, leading: 1em, spacing: 14pt)
-  
-  #others.授权
-  
-  #v(23pt)
-  #set text(字号.小四)
-  #h(32pt) 作者签名：\_\_\_\_\_\_\_\_\_\_\_\_　　　　导师签名：\_\_\_\_\_\_\_\_\_\_\_\_
-  #v(16pt)
-  #h(32pt) 日　　期：\_\_\_\_\_\_\_\_\_\_\_\_　　　　日　　期：\_\_\_\_\_\_\_\_\_\_\_\_
-]
+}
 
 // 博士生对本论文系统性和创新性的总结 
-
 if others.系统性创新性 != none {
   let empty-footer = [#sym.zws #label("__footer__")]
   set page(
@@ -574,27 +572,19 @@ if others.系统性创新性 != none {
   others.系统性创新性
 }
 
-
 // 中文摘要
-  
   set page(numbering: "I")
   counter(page).update(1)
   set par(leading: 10pt, spacing: 10pt)
-  
   heading(numbering: none, outlined: true, "摘　　要")
-  
   others.摘要
-  
   set par(first-line-indent: 0em)
   linebreak()
   text(font: 字体.黑体)[关键词：]
   others.关键词.join("；")
 
-
-
-
 // English abstract
-
+if true{
   heading(numbering: none, outlined: true, "Abstract")
 
   set par(first-line-indent: (amount: 2em,all: true),justify: true)
@@ -606,41 +596,38 @@ if others.系统性创新性 != none {
   set par(first-line-indent: 0em)
   [*Keywords:* ]
   others.关键词_英.join("; ")
-
-
-  
-// 目录
-
-show outline.entry.where(level: 1):it=>{
-  set par(spacing: 15pt)
-  set text(字号.小四, font: 字体.黑体)
-  //it.prefix()
-  let loc = it.element.location()
-  let actual_loc=query(selector(<__footer__>).after(loc)).first().location()
-  let chap = counter("chapter").at(actual_loc).last()
-  if chap > 0 and it.element.numbering != none{
-    chinesenumbering(chap,location: loc)+h(1em)
-  }
-  
-  it.body()
-  set text(font: 字体.宋体)
-  box(width: 1fr, it.fill)
-  it.page()
-  parbreak();
 }
-show outline.entry.where(level:2): set block(above: 0.8em)
-show outline.entry.where(level:3): set block(above: 0.8em)
 
-outline(
-  title: "目　　录",
-  depth: 目录深度,
-  indent: 1em,
-)
+// 目录
+if true{
+  show outline.entry.where(level: 1):it=>{
+    set par(spacing: 15pt)
+    set text(字号.小四, font: 字体.黑体)
+    //it.prefix()
+    let loc = it.element.location()
+    let actual_loc=query(selector(<__footer__>).after(loc)).first().location()
+    let chap = counter("chapter").at(actual_loc).last()
+    if chap > 0 and it.element.numbering != none{
+      chinesenumbering(chap,location: loc)+h(1em)
+    }
+    
+    it.body()
+    set text(font: 字体.宋体)
+    box(width: 1fr, it.fill)
+    it.page()
+    parbreak();
+  }
+  show outline.entry.where(level:2): set block(above: 0.8em)
+  show outline.entry.where(level:3): set block(above: 0.8em)
 
-
+  outline(
+    title: "目　　录",
+    depth: 目录深度,
+    indent: 1em,
+  )
+}
 
 // 图表清单
-
 show outline.entry.where(level: 1):it=>{
   box({
     [
@@ -653,44 +640,23 @@ show outline.entry.where(level: 1):it=>{
     ]
   })
 } 
-
-
-if 插图清单 {
-   listoffigures(title: "插图清单", kind: image)
-  // outline(
-  //   title: "插图清单",
-  //   target: figure.where(kind: image),
-  // )
-
-}
-
-
-if 附表清单 {
-
-  listoffigures(title: "附表清单", kind: table)
-}
-
-
-if 代码清单 {
-
-  listoffigures(title: "代码清单", kind: "code")
-}
-
-
+if 插图清单 {listoffigures(title: "插图清单", kind: image)}
+if 附表清单 {listoffigures(title: "附表清单", kind: table)}
+if 代码清单 {listoffigures(title: "代码清单", kind: "code")}
 
 // 符号和缩略语说明
+if true{
+  heading(numbering: none, outlined: true, "符号和缩略语说明")
+  show terms.item: it=>{
+    grid(
+      columns: (8em, auto),
 
-heading(numbering: none, outlined: true, "符号和缩略语说明")
-show terms.item: it=>{
-  grid(
-    columns: (8em, auto),
-
-    it.term,
-    it.description,
-  )
+      it.term,
+      it.description,
+    )
+  }
+  others.符号和缩略语
 }
-
-others.符号和缩略语
 
 if 另页右页 == true {
   pagebreak(to: "odd")
@@ -713,22 +679,20 @@ doc
 
 
 // 附录
+if true{
+  appendix()
+  pagebreak()
+  others.附录
+}
 
-appendix()
-pagebreak()
-others.附录
-
-
-
-  // 致谢
-  
+// 致谢
+if true{
   heading(numbering: none, outlined: true, "致　　谢")
   others.致谢
-  
-  
-  
-  // 声明
-  
+}
+
+// 声明
+if true{
   heading(numbering: none, outlined: true, "声　　明")
   [
     #others.声明
@@ -736,11 +700,10 @@ others.附录
     #set align(right)
     签　名：\_\_\_\_\_\_\_\_\_\_\_\_　日　期：\_\_\_\_\_\_\_\_\_\_\_\_
   ]
-  
-  
-  
-  // 简历、成果
-  
+}
+
+// 简历、成果
+if true{
   heading(numbering: none, outlined: true, "个人简历、在学期间完成的相关学术成果")
   {
     set heading(outlined: false)
@@ -768,26 +731,26 @@ others.附录
     )
       others.简历和成果
   }
-  
-  
-  
-  // 指导教师评语
-  
+}
+
+// 指导教师评语
+if true{
   heading(numbering: none, outlined: true, "指导教师评语")
   others.指导教师评语
-  
-  
-  
-  // 答辩委员会决议书
-  
+}
+
+// 答辩委员会决议书
+if true{
   heading(numbering: none, outlined: true, "答辩委员会决议书")
   others.答辩委员会决议书
+}
 
-  if others.其他材料 != none {
-    heading(numbering: none, outlined: true, "其他材料")
-    others.其他材料
-  }
-  
+//其他材料
+if others.其他材料 != none {
+  heading(numbering: none, outlined: true, "其他材料")
+  others.其他材料
+}
+
 }
 
 #[
